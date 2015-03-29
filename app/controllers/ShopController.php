@@ -6,9 +6,9 @@ class ShopController extends \BaseController {
     {
         $req = $this->input();
 
-        if ($req->method == "Home")
+        if (@$req->method == "Home")
         {
-            if ($req->params[0] == "DOFUS_INGAME")
+            if (@$req->params[0] == "DOFUS_INGAME")
             {
                 $result = new stdClass;
         		$result->content = $this->content();
