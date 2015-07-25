@@ -8,19 +8,27 @@ class AccountController extends \BaseController {
 
         if ($req->method == "Authentification")
         {
-            // Ticket, Server ID, Character ID
-            if ($req->params[0] == "ADMIN")
+            //Auth::logout();
+            Session::flush();
+
+            $ticket =      $req->params[0];
+            $serverId =    $req->params[1];
+            $characterId = $req->params[2];
+
+            // Request account by Id
+
+            $user = Account::where('Ticket', $ticket)->first();
+
+            if ($user)
             {
-                // TODO check account
+                Auth::login($user);
 
-                Session::flush();
-
-                Session::put("ticket", "ADMIN");
-                Session::put("serverId", 1);
-                Session::put("characterId", 540);
+                Session::put("ticket",      $ticket);
+                Session::put("serverId",    $serverId);
+                Session::put("characterId", $characterId);
 
                 $result = new stdClass;
-        		$result->nickname = "Luax";
+                $result->nickname = $user->Nickname;
                 return $this->result($result);
             }
             else
@@ -32,12 +40,17 @@ class AccountController extends \BaseController {
 
     public function info()
     {
+        if (Auth::guest())
+        {
+            return $this->softError("Not logged");
+        }
+
         $req = $this->input();
 
-        if ($req->method == "Money")
+        if (@$req->method == "Money")
         {
             $result = new stdClass;
-            $result->ogrins = 666666666;
+            $result->ogrins = Auth::user()->Tokens;
             $result->krozs = 0;
             return $this->result($result);
         }

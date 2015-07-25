@@ -4,37 +4,65 @@ class ShopController extends \BaseController {
 
     public function shop()
     {
+        if (Auth::guest())
+        {
+            return $this->softError("Not logged");
+        }
+
         $req = $this->input();
 
-        if (in_array(@$req->method, array("Home", "ArticlesList")))
+        if (@$req->params[0] != "DOFUS_INGAME")
         {
-            if (@$req->params[0] == "DOFUS_INGAME")
-            {
-                if (@$req->params[2])
-                {
-                    $result = $this->page($req->params[2]);
-                    return $this->result($result);
-                }
-                else
-                {
-                    $result = new stdClass;
-                    $result->content = $this->home();
-                    return $this->result($result);
-                }
-            }
-            else
-                return $this->softError("KEYUNKNOWN");
-        }
-        if (@$req->method == "QuickBuy")
-        {
-            return $this->criticalError("QuickBuy not ready");
-            $this->buy($req->params[2]);
+            return $this->softError("KEYUNKNOWN");
         }
 
-        return $this->criticalError("Method not found");
+            if (@$req->method == "Home")         return $this->Home();
+        elseif (@$req->method == "ArticlesList") return $this->ArticlesList();
+        elseif (@$req->method == "QuickBuy")     return $this->QuickBuy();
+        else return $this->criticalError("Method not found");
     }
 
-    private function home()
+    private function Home()
+    {
+        $req = $this->input();
+
+        $result = new stdClass;
+        $result->content = $this->welcome();
+        return $this->result($result);
+    }
+
+    private function ArticlesList()
+    {
+        $req = $this->input();
+        $categoryId = @$req->params[2];
+
+        if (@$categoryId)
+        {
+            $result = $this->page($categoryId);
+            return $this->result($result);
+        }
+        else
+        {
+            return Home();
+        }
+    }
+
+    private function QuickBuy()
+    {
+        $req = $this->input();
+        $itemId = @$req->params[2];
+
+        if (@$itemId)
+        {
+            return $this->buy($itemId);
+        }
+        else
+        {
+            return $this->criticalError("invalid item id param");
+        }
+    }
+
+    private function welcome()
     {
         $content = new stdClass;
 
@@ -94,9 +122,18 @@ class ShopController extends \BaseController {
             return $this->criticalError("Special item not impleted");
         }
 
+        // TODO: search item by id
+
+        $price = 6000;
+
+        if (Auth::user()->Tokens < $price)
+        {
+            return $this->criticalError("Not enought Ogrines");
+        }
+
         $buyRequest = new stdClass;
         $buyRequest->key = "ILovePanda";
-        $buyRequest->serverId = Session::get('serverId');
+        $buyRequest->price = 0;
         $buyRequest->characterId = Session::get('characterId');
         $buyRequest->actions = array();
 
@@ -105,13 +142,34 @@ class ShopController extends \BaseController {
         $action->item = new stdClass;
         $action->item->itemId = $itemId;
         $action->item->quantity = 1;
+        $action->item->maxEffects = false;
 
         $buyRequest->actions[] = $action;
 
         $request = json_encode($buyRequest);
 
-        // TODO: open socket to server and send json
-        // return result;
+        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+
+        if ($socket === false)
+        {
+            return $this->criticalError("unable to contact shop server: " . socket_strerror(socket_last_error()));
+        }
+
+        $result = socket_connect($socket, gethostbyname("voidmx.net"), 7002);
+
+        if ($socket === false)
+        {
+            return $this->criticalError("unable to contact shop server: ($result) " . socket_strerror(socket_last_error()));
+        }
+
+        socket_write($socket, $request, strlen($request));
+        socket_close($socket);
+
+        Auth::user()->update(array(
+			'Tokens' => Auth::user()->Tokens - $price,
+		));
+
+        return $this->criticalError("not implented");
     }
 
     private function categories()

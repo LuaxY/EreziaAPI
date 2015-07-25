@@ -14,8 +14,8 @@
         "currency": "OGR",
         "stock": null,
         "image": {
-            "70_70": "http://staticns.ankama.com/shops/img/article/6652/gallery_all_70_70.png",
-            "200_200": "http://staticns.ankama.com/shops/img/article/6652/gallery_all_200_200.png",
+            "70_70": "http://api.voidmx.net/forge/shops/img/article/6652/gallery_all_70_70.png",
+            "200_200": "http://api.voidmx.net/forge/shops/img/article/6652/gallery_all_200_200.png",
             "590_178": false
         },
         "media": [{
@@ -25,7 +25,7 @@
             "type": "IMAGE",
             "param": "GALLERY",
             "order": "0",
-            "url": "http://staticns.ankama.com/shops/img/article/6652/gallery_all_50_50.png"
+            "url": "http://api.voidmx.net/forge/shops/img/article/6652/gallery_all_50_50.png"
         }],
         "references": [{
             "type": "VIRTUALGIFT",
@@ -37,7 +37,7 @@
                 "id": "16132",
                 "name": "Transcendant",
                 "description": "Ce parchemin vous permet d'apprendre l'attitude spéciale de la classe Eliotrope.",
-                "image": "http://staticns.ankama.com/dofus/www/game/items/200/24691.png"
+                "image": "http://api.voidmx.net/forge/dofus/www/game/items/200/24691.png"
             }]
         }]
     }, {
@@ -53,8 +53,8 @@
         "currency": "OGR",
         "stock": null,
         "image": {
-            "70_70": "http://staticns.ankama.com/shops/img/article/6480/gallery_all_70_70.png",
-            "200_200": "http://staticns.ankama.com/shops/img/article/6480/gallery_all_200_200.png",
+            "70_70": "http://api.voidmx.net/forge/shops/img/article/6480/gallery_all_70_70.png",
+            "200_200": "http://api.voidmx.net/forge/shops/img/article/6480/gallery_all_200_200.png",
             "590_178": false
         },
         "media": [{
@@ -64,7 +64,7 @@
             "type": "IMAGE",
             "param": "GALLERY",
             "order": "0",
-            "url": "http://staticns.ankama.com/shops/img/article/6480/gallery_all_50_50.png"
+            "url": "http://api.voidmx.net/forge/shops/img/article/6480/gallery_all_50_50.png"
         }],
         "references": [{
             "type": "DOFUSCOMMAND",
@@ -90,8 +90,8 @@
         "currency": "OGR",
         "stock": null,
         "image": {
-            "70_70": "http://staticns.ankama.com/shops/img/article/6479/gallery_all_70_70.png",
-            "200_200": "http://staticns.ankama.com/shops/img/article/6479/gallery_all_200_200.png",
+            "70_70": "http://api.voidmx.net/forge/shops/img/article/6479/gallery_all_70_70.png",
+            "200_200": "http://api.voidmx.net/forge/shops/img/article/6479/gallery_all_200_200.png",
             "590_178": false
         },
         "media": [{
@@ -101,7 +101,7 @@
             "type": "IMAGE",
             "param": "GALLERY",
             "order": "0",
-            "url": "http://staticns.ankama.com/shops/img/article/6479/gallery_all_50_50.png"
+            "url": "http://api.voidmx.net/forge/shops/img/article/6479/gallery_all_50_50.png"
         }],
         "references": [{
             "type": "VIRTUALGIFT",
@@ -113,7 +113,7 @@
                 "id": "16122",
                 "name": "Drakopin",
                 "description": "Les Drakopins sont nés sous les eaux de Sufokia, dans une immense caverne découverte par les Eliotropes. Ces dragons miniatures en manque d'affection sont des compagnons tr\u00e8s fid\u00e8les. Quand un Drakopin vous adopte, c'est pour la vie ! Lors de vos soirées entre aventuriers, comptez sur lui pour réchauffer l'ambiance ou pour détendre l'atmosph\u00e8re avec ses grimaces.\r\nPour une obscure histoire d'\u0153ufs, les Drakopins raffolent des \u00e2mes des Truches. Le cirque de Cania est donc leur zone de prédilection.",
-                "image": "http://staticns.ankama.com/dofus/www/game/items/200/18106.png"
+                "image": "http://api.voidmx.net/forge/dofus/www/game/items/200/18106.png"
             }]
         }]
     }]

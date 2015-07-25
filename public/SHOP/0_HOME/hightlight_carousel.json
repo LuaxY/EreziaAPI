@@ -8,13 +8,13 @@
         "type": "ARTICLE",
         "mode": "CAROUSEL",
         "image": {
-            "208_129": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_208_129.jpg",
-            "288_178": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_288_178.jpg",
-            "590_178": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_590_178.jpg",
-            "667_240": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_667_240.jpg",
-            "396_221": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_396_221.jpg",
-            "420_234": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_420_234.jpg",
-            "950_531": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_950_531.jpg"
+            "208_129": "http://api.voidmx.net/forge/shops/img/highlights/268/mea_all_208_129.jpg",
+            "288_178": "http://api.voidmx.net/forge/shops/img/highlights/268/mea_all_288_178.jpg",
+            "590_178": "http://api.voidmx.net/forge/shops/img/highlights/268/mea_all_590_178.jpg",
+            "667_240": "http://api.voidmx.net/forge/shops/img/highlights/268/mea_all_667_240.jpg",
+            "396_221": "http://api.voidmx.net/forge/shops/img/highlights/268/mea_all_396_221.jpg",
+            "420_234": "http://api.voidmx.net/forge/shops/img/highlights/268/mea_all_420_234.jpg",
+            "950_531": "http://api.voidmx.net/forge/shops/img/highlights/268/mea_all_950_531.jpg"
         },
         "external": {
             "id": "1",
@@ -29,8 +29,8 @@
             "currency": "OGR",
             "stock": null,
             "image": {
-                "70_70": "http://staticns.ankama.com/shops/img/article/6480/gallery_all_70_70.png",
-                "200_200": "http://staticns.ankama.com/shops/img/article/6480/gallery_all_200_200.png",
+                "70_70": "http://api.voidmx.net/forge/shops/img/article/6480/gallery_all_70_70.png",
+                "200_200": "http://api.voidmx.net/forge/shops/img/article/6480/gallery_all_200_200.png",
                 "590_178": false
             },
             "media": [{
@@ -40,7 +40,7 @@
                 "type": "IMAGE",
                 "param": "GALLERY",
                 "order": "0",
-                "url": "http://staticns.ankama.com/shops/img/article/6480/gallery_all_50_50.png"
+                "url": "http://api.voidmx.net/forge/shops/img/article/6480/gallery_all_50_50.png"
             }],
             "references": [{
                 "type": "DOFUSCOMMAND",
