@@ -165,7 +165,13 @@ class ShopController extends \BaseController {
 			'Tokens' => Auth::user()->Tokens - $price,
 		));
 
-        return $this->criticalError("not implented");
+        $data = new stdClass;
+
+        $data->result = true;
+        $data->ogrins = Auth::user()->Tokens;
+        $data->krozs = 0;
+
+        return $data;
     }
 
     private function categories()
