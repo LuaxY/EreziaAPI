@@ -162,9 +162,8 @@ class ShopController extends \BaseController {
         socket_write($socket, $request, strlen($request));
         socket_close($socket);
 
-        Auth::user()->update(array(
-			'Tokens' => Auth::user()->Tokens - $price,
-		));
+        Auth::user()->Tokens -= $price;
+        Auth::user()->update(array('Tokens' => Auth::user()->Tokens));
 
         $data = new stdClass;
 
