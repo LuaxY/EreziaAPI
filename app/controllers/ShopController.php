@@ -54,7 +54,8 @@ class ShopController extends \BaseController {
 
         if (@$itemId)
         {
-            return $this->buy($itemId);
+            $result = $this->buy($itemId);
+            return $this->result($result);
         }
         else
         {
