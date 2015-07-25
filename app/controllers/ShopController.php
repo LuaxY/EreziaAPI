@@ -6,24 +6,35 @@ class ShopController extends \BaseController {
     {
         $req = $this->input();
 
-        if (@$req->method == "Home")
+        if (in_array(@$req->method, array("Home", "ArticlesList")))
         {
             if (@$req->params[0] == "DOFUS_INGAME")
             {
-                $result = new stdClass;
-        		$result->content = $this->content();
-                return $this->result($result);
-
-                //return file_get_contents("shop.json");
+                if (@$req->params[2])
+                {
+                    $result = $this->page($req->params[2]);
+                    return $this->result($result);
+                }
+                else
+                {
+                    $result = new stdClass;
+                    $result->content = $this->home();
+                    return $this->result($result);
+                }
             }
             else
                 return $this->softError("KEYUNKNOWN");
+        }
+        if (@$req->method == "QuickBuy")
+        {
+            return $this->criticalError("QuickBuy not ready");
+            $this->buy($req->params[2]);
         }
 
         return $this->criticalError("Method not found");
     }
 
-    private function content()
+    private function home()
     {
         $content = new stdClass;
 
@@ -36,13 +47,80 @@ class ShopController extends \BaseController {
         return $content;
     }
 
+    private function page($id)
+    {
+        $content = new stdClass;
+
+        $categories = json_decode(file_get_contents("SHOP/categories.json"))->categories;
+
+        $key = null;
+        foreach ($categories as $category)
+        {
+            if ($id == $category->id)
+            {
+                $key = $category->key;
+                break;
+            }
+        }
+
+        if ($key != null)
+        {
+            $files = scandir("SHOP/$key");
+            $content->result = true;
+            $content->count = 0;
+            $content->articles = array();
+
+            foreach ($files as $file)
+            {
+                if (in_array($file, array(".", "..")))
+                    continue;
+
+                $content->articles[] = json_decode(file_get_contents("SHOP/$key/$file"));
+                $content->count++;
+            }
+
+            return $content;
+        }
+        else
+        {
+            return $this->criticalError("Categorie not found");
+        }
+    }
+
+    private function buy($itemId)
+    {
+        if ($itemId < 100)
+        {
+            return $this->criticalError("Special item not impleted");
+        }
+
+        $buyRequest = new stdClass;
+        $buyRequest->key = "ILovePanda";
+        $buyRequest->serverId = Session::get('serverId');
+        $buyRequest->characterId = Session::get('characterId');
+        $buyRequest->actions = array();
+
+        $action = new stdClass;
+        $action->type = "item";
+        $action->item = new stdClass;
+        $action->item->itemId = $itemId;
+        $action->item->quantity = 1;
+
+        $buyRequest->actions[] = $action;
+
+        $request = json_encode($buyRequest);
+
+        // TODO: open socket to server and send json
+        // return result;
+    }
+
     private function categories()
     {
         $data = new stdClass;
 
         $data->result = true;
         $data->categories = array();
-        $data->categories[] = $this->categories_categorie(1, "EREZIA_SHOP", "Boutique Erezia");
+        $data->categories[] = $this->categories_categorie(327, "SHOP_HOME", "Accueil");
 
         return $data;
     }
@@ -58,10 +136,17 @@ class ShopController extends \BaseController {
         $categorie->description = "";
         $categorie->image = false;
         $categorie->child = array();
-        $categorie->child[] =  $this->categories_categorie_child(1, "Familiers");
-        $categorie->child[] =  $this->categories_categorie_child(2, "Montures");
-        $categorie->child[] =  $this->categories_categorie_child(3, "Objets Vivants");
-        $categorie->child[] =  $this->categories_categorie_child(4, "Services");
+        //$categorie->child[] = $this->categories_categorie_child(1, "Familiers");
+
+        $categories = json_decode(file_get_contents("SHOP/categories.json"))->categories;
+
+        foreach ($categories as $category)
+        {
+            $categorie->child[] = $this->categories_categorie_child(
+                $category->id,
+                $category->name
+            );
+        }
 
         return $categorie;
     }
@@ -73,7 +158,7 @@ class ShopController extends \BaseController {
         $child->id = $id;
         $child->key = null;
         $child->name = $name;
-        $child->displaymode = "MOSAIC";
+        $child->displaymode = "LIST";
         $child->description = "";
         $child->image = false;
 
@@ -92,33 +177,17 @@ class ShopController extends \BaseController {
 
     private function gondolahead_article()
     {
-        $data = new stdClass;
-
-        $data->result = true;
-        $data->count = 0;
-        $data->articles = array();
-
-        return $data;
+        return json_decode(file_get_contents("SHOP/0_HOME/gondolahead_article.json"));;
     }
 
     private function hightlight_carousel()
     {
-        $data = new stdClass;
-
-        $data->result = true;
-        $data->hightlights = array();
-
-        return $data;
+        return json_decode(file_get_contents("SHOP/0_HOME/hightlight_carousel.json"));;
     }
 
     private function hightlight_image()
     {
-        $data = new stdClass;
-
-        $data->result = true;
-        $data->hightlights = array();
-
-        return $data;
+        return json_decode(file_get_contents("SHOP/0_HOME/hightlight_image.json"));;
     }
 
 }

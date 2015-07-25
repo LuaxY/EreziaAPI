@@ -1,0 +1,58 @@
+{
+    "result": true,
+    "hightlights": [{
+        "id": "1",
+        "name": "Erezia Premium",
+        "description": "Abonnement Erezia Premium",
+        "link": "",
+        "type": "ARTICLE",
+        "mode": "CAROUSEL",
+        "image": {
+            "208_129": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_208_129.jpg",
+            "288_178": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_288_178.jpg",
+            "590_178": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_590_178.jpg",
+            "667_240": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_667_240.jpg",
+            "396_221": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_396_221.jpg",
+            "420_234": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_420_234.jpg",
+            "950_531": "http://staticns.ankama.com/shops/img/highlights/268/mea_all_950_531.jpg"
+        },
+        "external": {
+            "id": "1",
+            "key": null,
+            "name": "Erezia Premium",
+            "subtitle": "",
+            "description": "Abonnement Erezia Premium",
+            "price": 6000,
+            "original_price": null,
+            "startdate": "2015-07-25 00:00:00",
+            "enddate": null,
+            "currency": "OGR",
+            "stock": null,
+            "image": {
+                "70_70": "http://staticns.ankama.com/shops/img/article/6480/gallery_all_70_70.png",
+                "200_200": "http://staticns.ankama.com/shops/img/article/6480/gallery_all_200_200.png",
+                "590_178": false
+            },
+            "media": [{
+                "id": "7153",
+                "key": null,
+                "lang": "ALL",
+                "type": "IMAGE",
+                "param": "GALLERY",
+                "order": "0",
+                "url": "http://staticns.ankama.com/shops/img/article/6480/gallery_all_50_50.png"
+            }],
+            "references": [{
+                "type": "DOFUSCOMMAND",
+                "quantity": "1",
+                "free": 0,
+                "name": "Abonnement Erezia Premium",
+                "description": "",
+                "content": {
+                    "method": "ClassChangeCharacter",
+                    "args": ["account", "server", "character"]
+                }
+            }]
+        }
+    }]
+}

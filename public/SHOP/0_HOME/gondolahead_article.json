@@ -1,0 +1,120 @@
+{
+    "result": true,
+    "count": 3,
+    "articles": [{
+        "id": "6652",
+        "key": null,
+        "name": "Attitude: Transcendant",
+        "subtitle": "",
+        "description": "Ce parchemin vous permet d'apprendre l'attitude spéciale de la classe Eliotrope.",
+        "price": 5000,
+        "original_price": null,
+        "startdate": "2015-02-24 00:00:00",
+        "enddate": null,
+        "currency": "OGR",
+        "stock": null,
+        "image": {
+            "70_70": "http://staticns.ankama.com/shops/img/article/6652/gallery_all_70_70.png",
+            "200_200": "http://staticns.ankama.com/shops/img/article/6652/gallery_all_200_200.png",
+            "590_178": false
+        },
+        "media": [{
+            "id": "9954",
+            "key": "",
+            "lang": "ALL",
+            "type": "IMAGE",
+            "param": "GALLERY",
+            "order": "0",
+            "url": "http://staticns.ankama.com/shops/img/article/6652/gallery_all_50_50.png"
+        }],
+        "references": [{
+            "type": "VIRTUALGIFT",
+            "quantity": "1",
+            "free": 0,
+            "name": "Transcendant",
+            "description": "Ce parchemin vous permet d'apprendre l'attitude spéciale de la classe Eliotrope.",
+            "content": [{
+                "id": "16132",
+                "name": "Transcendant",
+                "description": "Ce parchemin vous permet d'apprendre l'attitude spéciale de la classe Eliotrope.",
+                "image": "http://staticns.ankama.com/dofus/www/game/items/200/24691.png"
+            }]
+        }]
+    }, {
+        "id": "6480",
+        "key": "SERVICE_CLASSCHANGE",
+        "name": "Changement de Classe",
+        "subtitle": "",
+        "description": "<b>Assumez votre véritable personnalité et changez votre fa\u00e7on de jouer en changeant de classe et en conservant la m\u00eame puissance !</b>\r\n\u00a0\r\n\r\n<ul>\r\n\t<li>Ce service contient un changement de sexe, de visage et de couleur</li>\r\n\t<li>En changeant de classe, les points de caractéristiques de votre personnage seront réinitialisés et vous conservez les points additionnels.</li>\r\n\t<li>Les points de sorts de votre personnage seront remis \u00e0 zéro, sauf les points additionnels.</li>\r\n\t<li>Les métiers, l\u2019ensemble des succ\u00e8s et les qu\u00eates (excepté celles de classe) sont conservés.</li>\r\n\t<li>Le changement de classe sera obligatoire lors de la prochaine connexion de votre personnage</li>\r\n\t<li>Ce service n'est pas disponible sur le serveur Ombre.</li>\r\n\t<li>Bien s\u00fbr, vous ne pouvez pas reprendre la classe que vous incarnez déj\u00e0.</li>\r\n\t<li>Le prix est adapté au niveau du personnage:</li>\r\n</ul>\r\n\r\n<b>\u00a0 \u00a0 \u00a0 \u00a0 \u00a0 \u00a0 \u00a0 \u00a0Niveau 1 \u00e0 100 = 50 OG par niveau</b>\r\n<strong><b>\u00a0 \u00a0 \u00a0 \u00a0 \u00a0 \u00a0 \u00a0 \u00a0Niveau 101 \u00e0 200 = 150 OG par niveau</b></strong>\r\n\u00a0\r\n<li>Attention ! Il ne suffit pas de changer de classe pour aussit\u00f4t la ma\u00eetriser ! Avant de vous lancer dans l\u2019aventure, prenez le temps de tester vos sorts et de vous familiariser avec votre \u00ab nouveau vous \u00bb\u2026 </li>\r\n\r\nBonne chance\u00a0!",
+        "price": 50,
+        "original_price": null,
+        "startdate": "2014-12-09 10:00:00",
+        "enddate": null,
+        "currency": "OGR",
+        "stock": null,
+        "image": {
+            "70_70": "http://staticns.ankama.com/shops/img/article/6480/gallery_all_70_70.png",
+            "200_200": "http://staticns.ankama.com/shops/img/article/6480/gallery_all_200_200.png",
+            "590_178": false
+        },
+        "media": [{
+            "id": "8826",
+            "key": null,
+            "lang": "ALL",
+            "type": "IMAGE",
+            "param": "GALLERY",
+            "order": "0",
+            "url": "http://staticns.ankama.com/shops/img/article/6480/gallery_all_50_50.png"
+        }],
+        "references": [{
+            "type": "DOFUSCOMMAND",
+            "quantity": "1",
+            "free": 0,
+            "name": "Changer la classe d'un personnage",
+            "description": "",
+            "content": {
+                "method": "ClassChangeCharacter",
+                "args": ["account", "server", "character"]
+            }
+        }]
+    }, {
+        "id": "6479",
+        "key": null,
+        "name": "Drakopin",
+        "subtitle": "",
+        "description": "Les Drakopins sont nés sous les eaux de Sufokia, dans une immense caverne découverte par les Eliotropes. Ces dragons miniatures en manque d'affection sont des compagnons tr\u00e8s fid\u00e8les. Quand un Drakopin vous adopte, c'est pour la vie ! Lors de vos soirées entre aventuriers, comptez sur lui pour réchauffer l'ambiance ou pour détendre l'atmosph\u00e8re avec ses grimaces. Pour une obscure histoire d'\u0153ufs, les Drakopins raffolent des \u00e2mes des Truches. Le cirque de Cania est donc leur zone de prédilection.\n\nBonus: +50 Sagesse.\u00a0",
+        "price": 5000,
+        "original_price": null,
+        "startdate": "2014-12-09 14:00:00",
+        "enddate": null,
+        "currency": "OGR",
+        "stock": null,
+        "image": {
+            "70_70": "http://staticns.ankama.com/shops/img/article/6479/gallery_all_70_70.png",
+            "200_200": "http://staticns.ankama.com/shops/img/article/6479/gallery_all_200_200.png",
+            "590_178": false
+        },
+        "media": [{
+            "id": "8333",
+            "key": null,
+            "lang": "ALL",
+            "type": "IMAGE",
+            "param": "GALLERY",
+            "order": "0",
+            "url": "http://staticns.ankama.com/shops/img/article/6479/gallery_all_50_50.png"
+        }],
+        "references": [{
+            "type": "VIRTUALGIFT",
+            "quantity": "1",
+            "free": 0,
+            "name": "Cadeau Drakopin",
+            "description": "En posant votre oreille sur ce cadeau ou en le secouant vigoureusement, vous entendrez peut-\u00eatre d'étranges bruits qui vous révéleront la présence d'une créature encore vivante. Ne perdez pas une seule seconde, ouvrez-le vite, vous y trouverez un superbe familier, un livre vous expliquant comment l'élever, et des poudres d'Eniripsa pour le soigner.",
+            "content": [{
+                "id": "16122",
+                "name": "Drakopin",
+                "description": "Les Drakopins sont nés sous les eaux de Sufokia, dans une immense caverne découverte par les Eliotropes. Ces dragons miniatures en manque d'affection sont des compagnons tr\u00e8s fid\u00e8les. Quand un Drakopin vous adopte, c'est pour la vie ! Lors de vos soirées entre aventuriers, comptez sur lui pour réchauffer l'ambiance ou pour détendre l'atmosph\u00e8re avec ses grimaces.\r\nPour une obscure histoire d'\u0153ufs, les Drakopins raffolent des \u00e2mes des Truches. Le cirque de Cania est donc leur zone de prédilection.",
+                "image": "http://staticns.ankama.com/dofus/www/game/items/200/18106.png"
+            }]
+        }]
+    }]
+}

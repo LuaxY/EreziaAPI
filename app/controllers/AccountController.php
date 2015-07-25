@@ -8,9 +8,17 @@ class AccountController extends \BaseController {
 
         if ($req->method == "Authentification")
         {
-            // Token, Server ID, Character ID
+            // Ticket, Server ID, Character ID
             if ($req->params[0] == "ADMIN")
             {
+                // TODO check account
+
+                Session::flush();
+
+                Session::put("ticket", "ADMIN");
+                Session::put("serverId", 1);
+                Session::put("characterId", 540);
+
                 $result = new stdClass;
         		$result->nickname = "Luax";
                 return $this->result($result);
@@ -29,7 +37,7 @@ class AccountController extends \BaseController {
         if ($req->method == "Money")
         {
             $result = new stdClass;
-            $result->ogrins = 666;
+            $result->ogrins = 666666666;
             $result->krozs = 0;
             return $this->result($result);
         }

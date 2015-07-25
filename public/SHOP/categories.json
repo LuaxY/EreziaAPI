@@ -1,0 +1,14 @@
+{
+    "categories": [
+        {
+            "id": 1,
+            "key": "EREZIA_PETS",
+            "name": "Familiers"
+        },
+        {
+            "id": 2,
+            "key": "EREZIA_MOUNTS",
+            "name": "Montures"
+        }
+    ]
+}
