@@ -155,7 +155,7 @@ class ShopController extends \BaseController {
             return $this->criticalError("unable to contact shop server: " . socket_strerror(socket_last_error()));
         }
 
-        $result = socket_connect($socket, gethostbyname("voidmx.net"), 7002);
+        $result = socket_connect($socket, Config::get('dofus.shop_host'), Config::get('dofus.shop_port'));
 
         if ($socket === false)
         {
