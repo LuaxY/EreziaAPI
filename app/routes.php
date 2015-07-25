@@ -14,3 +14,6 @@
 Route::post('game/authentification.json', 'AccountController@auth');
 Route::post('game/account.json', 'AccountController@info');
 Route::post('game/shop.json', 'ShopController@shop');
+
+Route::get('forge/{request}', 'ForgeController@forge')->where('request', '(.*)');
+Route::get('text/{id}', 'ForgeController@text')->where('id', '[0-9]+');;

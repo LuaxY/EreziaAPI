@@ -61,7 +61,7 @@ if (@$dispatcher[1] == "text")
     if (!$textId)
         die("Invalid text id.");
 
-    $text = $client->get("dofus:text:.".$textId);
+    $text = $client->get("dofus:text:".$textId);
 
     if ($text)
     {
