@@ -8,6 +8,8 @@ class AccountController extends \BaseController {
 
         if ($req->method == "Authentification")
         {
+            $result = new stdClass;
+
             $ticket =      $req->params[0];
             $serverId =    $req->params[1];
             $characterId = $req->params[2];
@@ -26,22 +28,26 @@ class AccountController extends \BaseController {
                 Session::put("serverId",    $serverId);
                 Session::put("characterId", $characterId);
 
-                $result = new stdClass;
                 $result->nickname = $user->Nickname;
-                return $this->result($result);
             }
             else
-                return $this->softError("KEYUNKNOWN");
+            {
+                $result->error = "AUTH_FAILED";
+            }
+
+            return $this->result($result);
         }
 
-        return $this->criticalError("Method not found");
+        return $this->softError("Method not found");
     }
 
     public function info()
     {
         if (Auth::guest())
         {
-            return $this->softError("Not logged");
+            $data = new stdClass;
+            $data->error = "AUTH_FAILED";
+            return $this->result($data);
         }
 
         $req = $this->input();
@@ -54,7 +60,7 @@ class AccountController extends \BaseController {
             return $this->result($result);
         }
 
-        return $this->criticalError("Method not found");
+        return $this->softError("Method not found");
     }
 
 }

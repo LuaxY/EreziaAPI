@@ -6,20 +6,22 @@ class ShopController extends \BaseController {
     {
         if (Auth::guest())
         {
-            return $this->softError("Not logged");
+            $data = new stdClass;
+            $data->error = "AUTH_FAILED";
+            return $this->result($data);
         }
 
         $req = $this->input();
 
         if (@$req->params[0] != "DOFUS_INGAME")
         {
-            return $this->softError("KEYUNKNOWN");
+            return $this->softError("KEY_UNKNOWN");
         }
 
             if (@$req->method == "Home")         return $this->Home();
         elseif (@$req->method == "ArticlesList") return $this->ArticlesList();
         elseif (@$req->method == "QuickBuy")     return $this->QuickBuy();
-        else return $this->criticalError("Method not found");
+        else return $this->softError("Method not found");
     }
 
     private function Home()
@@ -59,7 +61,7 @@ class ShopController extends \BaseController {
         }
         else
         {
-            return $this->criticalError("invalid item id param");
+            return $this->softError("invalid item id param");
         }
     }
 
@@ -112,15 +114,17 @@ class ShopController extends \BaseController {
         }
         else
         {
-            return $this->criticalError("Categorie not found");
+            return $this->softError("Categorie not found");
         }
     }
 
     private function buy($itemId)
     {
+        $data = new stdClass;
+
         if ($itemId < 100)
         {
-            return $this->criticalError("Special item not impleted");
+            return $this->softError("Special item not impleted");
         }
 
         // TODO: search item by id
@@ -129,7 +133,8 @@ class ShopController extends \BaseController {
 
         if (Auth::user()->Tokens < $price)
         {
-            return $this->criticalError("Not enought Ogrines");
+            $data->error = "MISSINGMONEY";
+            return $data;
         }
 
         $buyRequest = new stdClass;
@@ -164,8 +169,6 @@ class ShopController extends \BaseController {
 
         Auth::user()->Tokens -= $price;
         Auth::user()->update(array('Tokens' => Auth::user()->Tokens));
-
-        $data = new stdClass;
 
         $data->result = true;
         $data->ogrins = Auth::user()->Tokens;
