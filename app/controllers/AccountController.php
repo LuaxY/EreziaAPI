@@ -8,20 +8,19 @@ class AccountController extends \BaseController {
 
         if ($req->method == "Authentification")
         {
-            //Auth::logout();
-            Session::flush();
-
             $ticket =      $req->params[0];
             $serverId =    $req->params[1];
             $characterId = $req->params[2];
 
-            // Request account by Id
-
-            $user = Account::where('Ticket', $ticket)->first();
+            if (Auth::check())
+                $user = Auth::user();
+            else
+                $user = Account::where('Ticket', $ticket)->first();
 
             if ($user)
             {
-                Auth::login($user);
+                if (Auth::guest())
+                    Auth::login($user);
 
                 Session::put("ticket",      $ticket);
                 Session::put("serverId",    $serverId);

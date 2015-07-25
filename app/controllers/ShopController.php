@@ -148,18 +148,14 @@ class ShopController extends \BaseController {
 
         $request = json_encode($buyRequest);
 
-        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-
-        if ($socket === false)
+        if (($socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false)
         {
             return $this->criticalError("unable to contact shop server: " . socket_strerror(socket_last_error()));
         }
 
-        $result = socket_connect($socket, Config::get('dofus.shop_host'), Config::get('dofus.shop_port'));
-
-        if ($socket === false)
+        if (!socket_connect($socket, Config::get('dofus.shop_host'), Config::get('dofus.shop_port')))
         {
-            return $this->criticalError("unable to contact shop server: ($result) " . socket_strerror(socket_last_error()));
+            return $this->criticalError("unable to contact shop server: " . socket_strerror(socket_last_error()));
         }
 
         socket_write($socket, $request, strlen($request));
