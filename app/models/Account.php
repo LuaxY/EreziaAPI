@@ -24,6 +24,8 @@ class Account extends \Eloquent implements UserInterface {
 
 	protected $table = 'accounts';
 
+	protected $connection = 'auth';
+
 	public $timestamps = false;
 
 	protected $hidden = array('PasswordHash');

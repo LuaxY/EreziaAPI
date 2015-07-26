@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => 'web',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -46,10 +46,32 @@ return array(
 
 	'connections' => array(
 
-		'mysql' => array(
+		'web' => array(
+			'driver'    => 'mysql',
+			'host'      => 'voidmx.net',
+			'database'  => 'erezia_web',
+			'username'  => 'erezia_luax',
+			'password'  => 'T5ufA5nNEZjuqyPX',
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
+		),
+
+		'auth' => array(
 			'driver'    => 'mysql',
 			'host'      => 'voidmx.net',
 			'database'  => 'erezia_auth',
+			'username'  => 'erezia_luax',
+			'password'  => 'T5ufA5nNEZjuqyPX',
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
+		),
+
+		'world' => array(
+			'driver'    => 'mysql',
+			'host'      => 'voidmx.net',
+			'database'  => 'erezia_world',
 			'username'  => 'erezia_luax',
 			'password'  => 'T5ufA5nNEZjuqyPX',
 			'charset'   => 'utf8',

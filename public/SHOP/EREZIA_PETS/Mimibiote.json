@@ -1,18 +1,18 @@
 {
-    "id": "5289",
+    "id": "1",
     "key": null,
     "name": "Mimibiote",
     "subtitle": "",
     "description": "Cette créature protéiforme absorbe l'apparence de l'unique repas de sa vie, avant de former une relation symbiotique fusionnelle sur un objet hôte du même type que son repas. Quand le mimibiote est retiré de force de son hôte il perd ses capacités adhésives à tout jamais, c'est pourquoi la plupart de ses utilisateurs le reléche après usage, sans même verser une petite larme.\n\nLe Mimibiote vous permet de donner à un objet l'apparence d'un autre objet du même type et de niveau inférieur ou égal au sien.\nAttention, l'objet dont l'apparence sera copiée sera détruit dans le processus.",
-    "price": 2400,
+    "price": 700,
     "original_price": null,
-    "startdate": "2013-08-21 00:00:00",
+    "startdate": "2015-08-21 00:00:00",
     "enddate": null,
     "currency": "OGR",
     "stock": null,
     "image": {
-        "70_70": "http://api.voidmx.net/forge/shops/img/reference/6544/all_70_70.png",
-        "200_200": "http://api.voidmx.net/forge/shops/img/reference/6544/all_200_200.png",
+        "70_70": false,
+        "200_200": false,
         "590_178": false
     },
     "references": [{
@@ -25,7 +25,7 @@
             "id": "14485",
             "name": "Mimibiote",
             "description": "Cette créature protéiforme absorbe l'apparence de l'unique repas de sa vie, avant de former une relation symbiotique fusionnelle sur un objet hôte du même type que son repas. Quand le mimibiote est retiré de force de son hôte, il perd ses capacités adhésives à tout jamais, c'est pourquoi la plupart de ses utilisateurs le reléchent après usage, sans même verser une petite larme.",
-            "image": "http://api.voidmx.net/forge/dofus/www/game/items/200/14100.png"
+            "image": false
         }]
     }]
 }

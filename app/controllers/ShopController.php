@@ -38,7 +38,7 @@ class ShopController extends \BaseController {
         $req = $this->input();
         $categoryId = @$req->params[2];
 
-        if (@$categoryId)
+        if ($categoryId)
         {
             $result = $this->page($categoryId);
             return $this->result($result);
@@ -54,7 +54,7 @@ class ShopController extends \BaseController {
         $req = $this->input();
         $itemId = @$req->params[2];
 
-        if (@$itemId)
+        if ($itemId)
         {
             $result = $this->buy($itemId);
             return $this->result($result);
@@ -78,75 +78,106 @@ class ShopController extends \BaseController {
         return $content;
     }
 
-    private function page($id)
+    private function page($categorieId)
     {
         $content = new stdClass;
 
-        $categories = json_decode(file_get_contents("SHOP/categories.json"))->categories;
+        $content->result = true;
+        $content->count = 0;
+        $content->articles = array();
 
-        $key = null;
-        foreach ($categories as $category)
+        $objects = Object::where('categorie_id', $categorieId)->where('enabled', 1)->get();
+
+        foreach ($objects as $object)
         {
-            if ($id == $category->id)
+            $currentObject = new stdClass;
+
+            $currentObject->id =             "{$object->id}";
+            $currentObject->key =            $object->key;
+            $currentObject->name =           $object->name;
+            $currentObject->subtitle =       $object->subtitle;
+            $currentObject->description =    $object->description;
+
+            if ($object->promo < 0)
             {
-                $key = $category->key;
-                break;
+                $currentObject->price =          $object->price + $object->promo;
+                $currentObject->original_price = $object->price;
             }
-        }
-
-        if ($key != null)
-        {
-            $files = scandir("SHOP/$key");
-            $content->result = true;
-            $content->count = 0;
-            $content->articles = array();
-
-            foreach ($files as $file)
+            else
             {
-                if (in_array($file, array(".", "..")))
-                    continue;
-
-                $content->articles[] = json_decode(file_get_contents("SHOP/$key/$file"));
-                $content->count++;
+                $currentObject->price =          $object->price;
+                $currentObject->original_price = null;
             }
 
-            return $content;
+            $currentObject->startdate =      $object->startdate;
+            $currentObject->enddate =        null;
+            $currentObject->currency =       "OGR";
+            $currentObject->stock =          null;
+            $currentObject->image =          new stdClass;
+
+            $currentObject->image->{'70_70'}   = false;
+            $currentObject->image->{'200_200'} = false;
+            $currentObject->image->{'590_178'} = false;
+
+            $currentObject->references =     array();
+
+            $reference = new stdClass;
+
+            $reference->type        = "VIRTUALGIFT";
+            $reference->quantity    = "{$object->quantity}";
+            $reference->free        = 0;
+            $reference->name        = $object->name;
+            $reference->description = $object->description;
+            $reference->content     = array();
+
+            $item = new stdClass;
+
+            $item->id          = $object->item->Id;
+            $item->name        = $object->name;
+            $item->description = $object->description;
+            $item->image       = false;
+
+            $reference->content[] = $item;
+
+            $currentObject->references[] = $reference;
+
+            $content->articles[] = $currentObject;
+            $content->count++;
         }
-        else
-        {
-            return $this->softError("Categorie not found");
-        }
+
+        return $content;
     }
 
-    private function buy($itemId)
+    private function buy($objectId)
     {
-        $data = new stdClass;
+        $content = new stdClass;
 
-        if ($itemId < 100)
+        $object = Object::find($objectId);
+
+        if (!$object)
         {
-            return $this->softError("Special item not impleted");
+            $content->error = "PAIDFAILED";
+            return $content;
         }
 
-        // TODO: search item by id
-
-        $price = 6000;
+        $price = $object->price + $object->promo;
 
         if (Auth::user()->Tokens < $price)
         {
-            $data->error = "MISSINGMONEY";
-            return $data;
+            $content->error = "MISSINGMONEY";
+            return $content;
         }
 
         $buyRequest = new stdClass;
         $buyRequest->key = "ILovePanda";
-        $buyRequest->price = 0;
+        $buyRequest->price = $price;
         $buyRequest->characterId = Session::get('characterId');
         $buyRequest->actions = array();
 
         $action = new stdClass;
         $action->type = "item";
         $action->item = new stdClass;
-        $action->item->itemId = $itemId;
+        $action->item->itemId = $object->item_id;
         $action->item->quantity = 1;
         $action->item->maxEffects = false;
 
@@ -170,11 +201,11 @@ class ShopController extends \BaseController {
         Auth::user()->Tokens -= $price;
         Auth::user()->update(array('Tokens' => Auth::user()->Tokens));
 
-        $data->result = true;
-        $data->ogrins = Auth::user()->Tokens;
-        $data->krozs = 0;
+        $content->result = true;
+        $content->ogrins = Auth::user()->Tokens;
+        $content->krozs = 0;
 
-        return $data;
+        return $content;
     }
 
     private function categories()
@@ -183,7 +214,7 @@ class ShopController extends \BaseController {
 
         $data->result = true;
         $data->categories = array();
-        $data->categories[] = $this->categories_categorie(327, "SHOP_HOME", "Accueil");
+        $data->categories[] = $this->categories_categorie(327, "SHOP_HOME", "Boutique Erezia");
 
         return $data;
     }
@@ -199,33 +230,39 @@ class ShopController extends \BaseController {
         $categorie->description = "";
         $categorie->image = false;
         $categorie->child = array();
-        //$categorie->child[] = $this->categories_categorie_child(1, "Familiers");
 
-        $categories = json_decode(file_get_contents("SHOP/categories.json"))->categories;
+        $childs = Category::where('enabled', 1)->get();
 
-        foreach ($categories as $category)
+        foreach ($childs as $child)
         {
-            $categorie->child[] = $this->categories_categorie_child(
-                $category->id,
-                $category->name
-            );
+            if ($child->parent == 0)
+                $categorie->child[] = $this->categories_categorie_child($child);
         }
 
         return $categorie;
     }
 
-    private function categories_categorie_child($id, $name)
+    private function categories_categorie_child($currentChild)
     {
-        $child = new stdClass;
+        $categorie = new stdClass;
 
-        $child->id = $id;
-        $child->key = null;
-        $child->name = $name;
-        $child->displaymode = "LIST";
-        $child->description = "";
-        $child->image = false;
+        $categorie->id = $currentChild->id;
+        $categorie->key = $currentChild->key;
+        $categorie->name = $currentChild->name;
+        $categorie->displaymode = $currentChild->displaymod;
+        $categorie->description = $currentChild->description;
+        $categorie->image = $currentChild->image;
+        $categorie->child = array();
 
-        return $child;
+        //$childs = $childs = $currentChild->childs;
+        $childs = Category::where('parent', $currentChild->id)->where('enabled', 1)->get();
+
+        foreach ($childs as $child)
+        {
+            $categorie->child[] = $this->categories_categorie_child($child);
+        }
+
+        return $categorie;
     }
 
     private function gondolahead_main()
