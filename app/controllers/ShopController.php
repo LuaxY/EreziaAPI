@@ -6,9 +6,11 @@ class ShopController extends \BaseController {
     {
         if (Auth::guest())
         {
-            $data = new stdClass;
+            return $this->softError("AUTH_FAILED");
+
+            /*$data = new stdClass;
             $data->error = "AUTH_FAILED";
-            return $this->result($data);
+            return $this->result($data);*/
         }
 
         $req = $this->input();
@@ -18,9 +20,10 @@ class ShopController extends \BaseController {
             return $this->softError("KEY_UNKNOWN");
         }
 
-            if (@$req->method == "Home")         return $this->Home();
-        elseif (@$req->method == "ArticlesList") return $this->ArticlesList();
-        elseif (@$req->method == "QuickBuy")     return $this->QuickBuy();
+            if (@$req->method == "Home")           return $this->Home();
+        elseif (@$req->method == "ArticlesList")   return $this->ArticlesList();
+        elseif (@$req->method == "QuickBuy")       return $this->QuickBuy();
+        elseif (@$req->method == "ArticlesSearch") return $this->ArticlesSearch();
         else return $this->softError("Method not found");
     }
 
@@ -65,6 +68,24 @@ class ShopController extends \BaseController {
         }
     }
 
+    private function ArticlesSearch()
+    {
+        $req = $this->input();
+        $query = @$req->params[2];
+
+        if (!empty($query))
+        {
+            $result = $this->search($query);
+            return $this->result($result);
+        }
+        else
+        {
+            return $this->softError("invalid search param");
+        }
+    }
+
+    //////////////////////////////////////////////////////////
+
     private function welcome()
     {
         $content = new stdClass;
@@ -90,58 +111,9 @@ class ShopController extends \BaseController {
 
         foreach ($objects as $object)
         {
-            $currentObject = new stdClass;
+            $article = $this->createArticle($object);
 
-            $currentObject->id =             "{$object->id}";
-            $currentObject->key =            $object->key;
-            $currentObject->name =           $object->name;
-            $currentObject->subtitle =       $object->subtitle;
-            $currentObject->description =    $object->description;
-
-            if ($object->promo < 0)
-            {
-                $currentObject->price =          $object->price + $object->promo;
-                $currentObject->original_price = $object->price;
-            }
-            else
-            {
-                $currentObject->price =          $object->price;
-                $currentObject->original_price = null;
-            }
-
-            $currentObject->startdate =      $object->startdate;
-            $currentObject->enddate =        null;
-            $currentObject->currency =       "OGR";
-            $currentObject->stock =          null;
-            $currentObject->image =          new stdClass;
-
-            $currentObject->image->{'70_70'}   = false;
-            $currentObject->image->{'200_200'} = false;
-            $currentObject->image->{'590_178'} = false;
-
-            $currentObject->references =     array();
-
-            $reference = new stdClass;
-
-            $reference->type        = "VIRTUALGIFT";
-            $reference->quantity    = "{$object->quantity}";
-            $reference->free        = 0;
-            $reference->name        = $object->name;
-            $reference->description = $object->description;
-            $reference->content     = array();
-
-            $item = new stdClass;
-
-            $item->id          = $object->item->Id;
-            $item->name        = $object->name;
-            $item->description = $object->description;
-            $item->image       = false;
-
-            $reference->content[] = $item;
-
-            $currentObject->references[] = $reference;
-
-            $content->articles[] = $currentObject;
+            $content->articles[] = $article;
             $content->count++;
         }
 
@@ -185,14 +157,16 @@ class ShopController extends \BaseController {
 
         $request = json_encode($buyRequest);
 
-        if (($socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false)
+        if (($socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false)
         {
-            return $this->criticalError("unable to contact shop server: " . socket_strerror(socket_last_error()));
+            $content->error = "socket_create: " . socket_last_error();
+            return $content;
         }
 
-        if (!socket_connect($socket, Config::get('dofus.shop_host'), Config::get('dofus.shop_port')))
+        if (!@socket_connect($socket, Config::get('dofus.shop_host'), Config::get('dofus.shop_port')))
         {
-            return $this->criticalError("unable to contact shop server: " . socket_strerror(socket_last_error()));
+            $content->error = "socket_connect: " . socket_last_error();
+            return $content;
         }
 
         socket_write($socket, $request, strlen($request));
@@ -204,6 +178,27 @@ class ShopController extends \BaseController {
         $content->result = true;
         $content->ogrins = Auth::user()->Tokens;
         $content->krozs = 0;
+
+        return $content;
+    }
+
+    private function search($query)
+    {
+        $content = new stdClass;
+
+        $content->result = true;
+        $content->count = 0;
+        $content->articles = array();
+
+        $objects = Object::where('name', 'like', "%$query%")->where('enabled', 1)->get();
+
+        foreach ($objects as $object)
+        {
+            $article = $this->createArticle($object);
+
+            $content->articles[] = $article;
+            $content->count++;
+        }
 
         return $content;
     }
@@ -277,17 +272,91 @@ class ShopController extends \BaseController {
 
     private function gondolahead_article()
     {
-        return json_decode(file_get_contents("SHOP/0_HOME/gondolahead_article.json"));;
+        //return json_decode(file_get_contents("SHOP/0_HOME/gondolahead_article.json"));
+
+        $content = new stdClass;
+
+        $content->result = true;
+        $content->count = 0;
+        $content->articles = array();
+
+        $objects = Object::where('featured', 1)->where('enabled', 1)->get();
+
+        foreach ($objects as $object)
+        {
+            $article = $this->createArticle($object);
+
+            $content->articles[] = $article;
+            $content->count++;
+        }
+
+        return $content;
     }
 
     private function hightlight_carousel()
     {
-        return json_decode(file_get_contents("SHOP/0_HOME/hightlight_carousel.json"));;
+        return json_decode(file_get_contents("SHOP/0_HOME/hightlight_carousel.json"));
     }
 
     private function hightlight_image()
     {
-        return json_decode(file_get_contents("SHOP/0_HOME/hightlight_image.json"));;
+        return json_decode(file_get_contents("SHOP/0_HOME/hightlight_image.json"));
+    }
+
+    private function createArticle($object)
+    {
+        $article = new stdClass;
+
+        $article->id =             "{$object->id}";
+        $article->key =            $object->key;
+        $article->name =           $object->name;
+        $article->subtitle =       $object->subtitle;
+        $article->description =    $object->description;
+
+        if ($object->promo < 0)
+        {
+            $article->price =          $object->price + $object->promo;
+            $article->original_price = $object->price;
+        }
+        else
+        {
+            $article->price =          $object->price;
+            $article->original_price = null;
+        }
+
+        $article->startdate =      $object->startdate;
+        $article->enddate =        null;
+        $article->currency =       "OGR";
+        $article->stock =          null;
+        $article->image =          new stdClass;
+
+        $article->image->{'70_70'}   = false;
+        $article->image->{'200_200'} = false;
+        $article->image->{'590_178'} = false;
+
+        $article->references =     array();
+
+        $reference = new stdClass;
+
+        $reference->type        = "VIRTUALGIFT";
+        $reference->quantity    = "{$object->quantity}";
+        $reference->free        = 0;
+        $reference->name        = $object->name;
+        $reference->description = $object->description;
+        $reference->content     = array();
+
+        $item = new stdClass;
+
+        $item->id          = $object->item->Id;
+        $item->name        = $object->name;
+        $item->description = $object->description;
+        $item->image       = false;
+
+        $reference->content[] = $item;
+
+        $article->references[] = $reference;
+
+        return $article;
     }
 
 }

@@ -15,14 +15,17 @@ class AccountController extends \BaseController {
             $characterId = $req->params[2];
 
             if (Auth::check())
+            {
                 $user = Auth::user();
+            }
             else
+            {
                 $user = Account::where('Ticket', $ticket)->first();
+            }
 
             if ($user)
             {
-                if (Auth::guest())
-                    Auth::login($user);
+                Auth::login($user);
 
                 Session::put("ticket",      $ticket);
                 Session::put("serverId",    $serverId);
@@ -32,7 +35,8 @@ class AccountController extends \BaseController {
             }
             else
             {
-                $result->error = "AUTH_FAILED";
+                //$result->error = "AUTH_FAILED";
+                return $this->softError("AUTH_FAILED");
             }
 
             return $this->result($result);
