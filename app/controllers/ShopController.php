@@ -86,6 +86,31 @@ class ShopController extends \BaseController {
 
     //////////////////////////////////////////////////////////
 
+    private function sendRequest($method, $request)
+    {
+        $rpc = new stdClass;
+
+        $rpc->method = $method;
+        $rpc->request = $request;
+
+        $data = json_encode($rpc);
+
+        if (($socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false)
+        {
+            return  "socket_create: " . socket_last_error();
+        }
+
+        if (!@socket_connect($socket, Config::get('dofus.shop_host'), Config::get('dofus.shop_port')))
+        {
+            return  "socket_connect: " . socket_last_error();
+        }
+
+        socket_write($socket, $data, strlen($data));
+        socket_close($socket);
+    }
+
+    //////////////////////////////////////////////////////////
+
     private function welcome()
     {
         $content = new stdClass;
@@ -155,22 +180,13 @@ class ShopController extends \BaseController {
 
         $buyRequest->actions[] = $action;
 
-        $request = json_encode($buyRequest);
+        $error = $this->sendRequest("buyItem", $buyRequest);
 
-        if (($socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false)
+        if (!empty($error))
         {
-            $content->error = "socket_create: " . socket_last_error();
+            $content->error = $error;
             return $content;
         }
-
-        if (!@socket_connect($socket, Config::get('dofus.shop_host'), Config::get('dofus.shop_port')))
-        {
-            $content->error = "socket_connect: " . socket_last_error();
-            return $content;
-        }
-
-        socket_write($socket, $request, strlen($request));
-        socket_close($socket);
 
         Auth::user()->Tokens -= $price;
         Auth::user()->update(array('Tokens' => Auth::user()->Tokens));

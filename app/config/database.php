@@ -48,10 +48,10 @@ return array(
 
 		'web' => array(
 			'driver'    => 'mysql',
-			'host'      => '10.11.0.1',
+			'host'      => '10.13.37.1',
 			'database'  => 'erezia_web',
 			'username'  => 'erezia_luax',
-			'password'  => 'Rde9AVDZ2KWddur4',
+			'password'  => 'HLwsdqHPmQC8SPvN',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
@@ -59,10 +59,10 @@ return array(
 
 		'auth' => array(
 			'driver'    => 'mysql',
-			'host'      => '10.11.0.1',
+			'host'      => '10.13.37.1',
 			'database'  => 'erezia_auth',
 			'username'  => 'erezia_luax',
-			'password'  => 'Rde9AVDZ2KWddur4',
+			'password'  => 'HLwsdqHPmQC8SPvN',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
@@ -70,10 +70,10 @@ return array(
 
 		'world' => array(
 			'driver'    => 'mysql',
-			'host'      => '10.11.0.1',
+			'host'      => '10.13.37.1',
 			'database'  => 'erezia_world',
 			'username'  => 'erezia_luax',
-			'password'  => 'Rde9AVDZ2KWddur4',
+			'password'  => 'HLwsdqHPmQC8SPvN',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
